@@ -1,5 +1,30 @@
+scheduleUpdater = ->
+    chrome.alarms.create 'pooque',
+        # DEBUG
+        # periodInMinutes: 0.05
+        when: Date.now() + 1000
+
+makeXHR = ->
+    xhr = new XMLHttpRequest()
+    xhr.responseType = 'json'
+    xhr.onload = xhrListener
+    xhr.open 'get', 'http://cloud.feedly.com/v3/markers/counts'
+    xhr.setRequestHeader 'Authorization', localStorage.oauth
+    xhr.send()
+
+setBadge = ->
+    chrome.browserAction.setBadgeBackgroundColor
+        color: [208, 0, 24, 255]
+
+    chrome.browserAction.setBadgeText
+        text: "123"
+
+xhrListener = ->
+    console.log this
+
+# DEBUG
+scheduleUpdater()
 chrome.runtime.onStartup.addListener ->
-    scheduleAlarms()
 
 chrome.browserAction.onClicked.addListener ->
     chrome.tabs.create
@@ -8,12 +33,5 @@ chrome.browserAction.onClicked.addListener ->
         console.log tab
 
 chrome.alarms.onAlarm.addListener ->
-    chrome.browserAction.setBadgeBackgroundColor
-        color: [208, 0, 24, 255]
-
-    chrome.browserAction.setBadgeText
-        text: "123"
-
-scheduleAlarms = ->
-    chrome.alarms.create 'pooque',
-        periodInMinutes: 0.05
+    makeXHR()
+    setBadge()
