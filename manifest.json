@@ -7,23 +7,24 @@
     // recommended
     "description": "Notifier of unread articles for Feedly RSS Reader",
     "icons": {
-        "16": "//img/16.png",
-        "48": "//img/48.png",
-        "128": "//img/128.png"
+        "16": "/img/16.png",
+        "48": "/img/48.png",
+        "128": "/img/128.png"
     },
     "default_locale": "en",
 
     // additions
     "browser_action": {
-        "default_icon": "//img/48.png",
+        "default_icon": "/img/48.png",
         "default_title": "Feedly Pooqer"
     },
     "permissions": [
         "tabs",
+        "alarms",
         "http://cloud.feedly.com/*"
     ],
     "background": {
-        "scripts": ["//js/background.js"],
+        "scripts": ["/js/background.js"],
         "persistent": false
     }
 }
