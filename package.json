@@ -1,0 +1,17 @@
+{
+  "name": "feedly-pooqer",
+  "version": "0.0.1",
+  "private": true,
+  "readme": "README.md",
+  "scripts": {
+    "start": "grunt"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-watch": "~0.3.1"
+  }
+}
