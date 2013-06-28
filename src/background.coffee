@@ -4,7 +4,7 @@ scheduleUpdater = ->
 
 sendRequest = ->
     unless localStorage.oauth
-        chrome.browserAction.setIcon { path: '/img/48g.png' }
+        chrome.browserAction.setIcon { path: '/img/ba_36g.png' }
         chrome.browserAction.setBadgeBackgroundColor color: [190, 190, 190, 230]
         chrome.browserAction.setBadgeText text: '?'
         return null
@@ -31,7 +31,7 @@ xhrReadyListener = ->
     else if @status == 401
         localStorage.removeItem 'oauth'
 
-    chrome.browserAction.setIcon { path: '/img/48.png' }
+    chrome.browserAction.setIcon { path: '/img/ba_36.png' }
     chrome.browserAction.setBadgeBackgroundColor color: color
     chrome.browserAction.setBadgeText text: "#{text}"
 
