@@ -15,16 +15,17 @@
 
     // additions
     "browser_action": {
-        "default_icon": "/img/48.png",
+        "default_icon": "/img/48g.png",
         "default_title": "Feedly Pooqer"
     },
     "permissions": [
         "tabs",
         "alarms",
+        "webRequest",
         "http://cloud.feedly.com/*"
     ],
     "background": {
         "scripts": ["/js/background.js"],
-        "persistent": false
+        "persistent": true
     }
 }
