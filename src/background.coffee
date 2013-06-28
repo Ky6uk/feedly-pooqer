@@ -1,6 +1,6 @@
 scheduleUpdater = ->
-    chrome.alarms.create 'pooque',
-        periodInMinutes: 5
+    chrome.alarms.get 'pooque', (alarm) ->
+        chrome.alarms.create 'pooque', { periodInMinutes: 1 } unless alarm
 
 sendRequest = ->
     unless localStorage.oauth
@@ -34,9 +34,16 @@ xhrReadyListener = ->
     chrome.browserAction.setBadgeBackgroundColor color: color
     chrome.browserAction.setBadgeText text: "#{text}"
 
-chrome.runtime.onStartup.addListener ->
+onInit = ->
+    chrome.alarms.clearAll()
     sendRequest()
     scheduleUpdater()
+
+chrome.runtime.onInstalled.addListener ->
+    onInit()
+
+chrome.runtime.onStartup.addListener ->
+    onInit()
 
 chrome.browserAction.onClicked.addListener ->
     chrome.tabs.create { url: 'http://cloud.feedly.com/' }, (tab) ->
