@@ -27,6 +27,7 @@ xhrReadyListener = ->
         color = [208, 0, 24, 255]
         response = JSON.parse @response
         text = calculateUnread response.unreadcounts
+        text = '' if text == 0
     else if @status == 401
         localStorage.removeItem 'oauth'
 
@@ -39,30 +40,35 @@ onInit = ->
     sendRequest()
     scheduleUpdater()
 
-chrome.runtime.onInstalled.addListener ->
-    onInit()
+openFeedly = ->
+    chrome.tabs.query { url: 'http://cloud.feedly.com/' }, (tabs) ->
+        if tabs[0]
+            tabId = tabs[0].id
+            chrome.tabs.update tabId, active: true unless tabs[0].active
+            return setAuth tabId
+        else
+            chrome.tabs.create { url: 'http://cloud.feedly.com/' }, (tab) ->
+                return setAuth tab.id
 
-chrome.runtime.onStartup.addListener ->
-    onInit()
-
-chrome.browserAction.onClicked.addListener ->
-    chrome.tabs.create { url: 'http://cloud.feedly.com/' }, (tab) ->
-        # update counter immediately
-        sendRequest()
-
-        # can't update oauth string if already set
-        # BUG: possible problem with async xhr
-        return if localStorage.oauth
-
-        chrome.webRequest.onBeforeSendHeaders.addListener (details) ->
-            for header in details.requestHeaders
-                continue unless header.name == 'X-Feedly-Access-Token'
-                localStorage.oauth = header.value
-                sendRequest()
-        ,
-            urls: ['http://cloud.feedly.com/v3/subscriptions*']
-            tabId: tab.id
-        , ["requestHeaders"]
-
-chrome.alarms.onAlarm.addListener ->
+setAuth = (tabId) ->
+    # update counter immediately
     sendRequest()
+
+    # can't update oauth string if already set
+    # BUG: possible problem with async xhr
+    return if localStorage.oauth
+
+    chrome.webRequest.onBeforeSendHeaders.addListener (details) ->
+        for header in details.requestHeaders
+            continue unless header.name == 'X-Feedly-Access-Token'
+            localStorage.oauth = header.value
+            sendRequest()
+    ,
+        urls: ['http://cloud.feedly.com/v3/subscriptions*']
+        tabId: tabId
+    , ["requestHeaders"]
+
+chrome.runtime.onInstalled.addListener onInit
+chrome.runtime.onStartup.addListener onInit
+chrome.browserAction.onClicked.addListener openFeedly
+chrome.alarms.onAlarm.addListener sendRequest
