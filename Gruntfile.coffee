@@ -3,6 +3,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-compress'
+    grunt.loadNpmTasks 'grunt-contrib-uglify'
 
     grunt.initConfig
         coffee:
@@ -14,7 +15,7 @@ module.exports = (grunt) ->
 
         watch:
             files: 'src/**/*.coffee'
-            tasks: ['coffee']
+            tasks: ['coffee', 'uglify']
 
         compress:
             main:
@@ -23,8 +24,14 @@ module.exports = (grunt) ->
                 src: [
                     'manifest.json'
                     'img/**/*'
-                    'js/**/*'
+                    'js/**/*.min.js'
                     '_locales/**/*'
                 ]
 
-    grunt.registerTask 'default', ['coffee', 'watch']
+        uglify:
+            feedly_pooqer:
+                files:
+                    'js/background.min.js': ['js/background.js']
+
+    grunt.registerTask 'default', ['coffee', 'uglify', 'watch']
+    grunt.registerTask 'bundle', ['uglify', 'compress']
