@@ -1,9 +1,9 @@
-"use strict"
-
 controlElements = {}
 
 document.addEventListener 'DOMContentLoaded', ->
-    getControls()
+    controlElements.fetch_timeout = document.getElementById 'fetch_timeout'
+    controlElements.save_button   = document.getElementById 'save_button'
+
     localizePage()
     restoreOptions()
 
@@ -17,15 +17,9 @@ localizePage = ->
     (document.getElementById 'fetch_timeout_label').innerHTML =
         chrome.i18n.getMessage 'options_fetch_timeout'
 
-getControls = ->
-    controlElements.fetch_timeout = document.getElementById 'fetch_timeout'
-    controlElements.save_button   = document.getElementById 'save_button'
-
 restoreOptions = ->
     controlElements.fetch_timeout.value = Options.getItem 'fetch_timeout'
 
 doSave = (event) ->
     Options.setItem 'fetch_timeout', controlElements.fetch_timeout.value
-
-    Options.storeAll()
     Options.applyAll()

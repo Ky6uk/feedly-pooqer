@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 scheduleUpdater = ->
     period = +localStorage.getItem 'fetch_timeout'
