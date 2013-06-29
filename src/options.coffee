@@ -1,4 +1,5 @@
-options = {}
+"use strict"
+
 controlElements = {}
 
 document.addEventListener 'DOMContentLoaded', ->
@@ -21,27 +22,10 @@ getControls = ->
     controlElements.save_button   = document.getElementById 'save_button'
 
 restoreOptions = ->
-    # get saved options
-    options.fetch_timeout = (localStorage.getItem 'fetch_timeout') || 1
-
-    # fill elements with saved options
-    controlElements.fetch_timeout.value = options.fetch_timeout
+    controlElements.fetch_timeout.value = Options.getItem 'fetch_timeout'
 
 doSave = (event) ->
-    # fetch_timeout limits
-    fetch_timeout = +controlElements.fetch_timeout.value
-    if fetch_timeout < controlElements.fetch_timeout.min
-        fetch_timeout = +controlElements.fetch_timeout.min
-    else if fetch_timeout > controlElements.fetch_timeout.max
-        fetch_timeout = +controlElements.fetch_timeout.max
+    Options.setItem 'fetch_timeout', controlElements.fetch_timeout.value
 
-    options.fetch_timeout = fetch_timeout
-
-    for own option, param of options
-        localStorage.setItem option, param
-
-    applyOptions()
-
-applyOptions = ->
-    chrome.alarms.clearAll()
-    chrome.alarms.create 'pooque', { periodInMinutes: options.fetch_timeout }
+    Options.storeAll()
+    Options.applyAll()

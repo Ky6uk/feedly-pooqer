@@ -11,8 +11,9 @@ module.exports = (grunt) ->
                 options:
                     bare: true
                 files:
-                    'js/background.js': 'src/background.coffee'
-                    'js/options.js': 'src/options.coffee'
+                    'js/options.js':        'src/options.coffee'
+                    'js/background.js':     'src/background.coffee'
+                    'js/options-export.js': 'src/options-export.coffee'
 
         watch:
             files: 'src/**/*.coffee'
@@ -33,8 +34,9 @@ module.exports = (grunt) ->
         uglify:
             feedly_pooqer:
                 files:
-                    'js/background.min.js': ['js/background.js']
-                    'js/options.min.js': ['js/options.js']
+                    'js/options.min.js':        ['js/options.js']
+                    'js/background.min.js':     ['js/background.js']
+                    'js/options-export.min.js': ['js/options-export.js']
 
     grunt.registerTask 'default', ['coffee', 'uglify', 'watch']
-    grunt.registerTask 'bundle', ['coffee', 'uglify', 'compress']
+    grunt.registerTask 'bundle',  ['coffee', 'uglify', 'compress']

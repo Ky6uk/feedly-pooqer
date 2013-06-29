@@ -1,6 +1,8 @@
+"use strict"
+
 scheduleUpdater = ->
-    period = localStorage.getItem 'fetch_timeout'
-    period = 1 if +period < 1
+    period = +localStorage.getItem 'fetch_timeout'
+    period = 1 if period < 1
 
     chrome.alarms.create 'pooque', { periodInMinutes: period }
 
