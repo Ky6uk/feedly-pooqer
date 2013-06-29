@@ -1,18 +1,15 @@
 scheduleUpdater = ->
-    chrome.alarms.get 'pooque', (alarm) ->
-        chrome.alarms.create 'pooque', { periodInMinutes: 1 } unless alarm
+    chrome.alarms.create 'pooque', { periodInMinutes: 1 }
 
 sendRequest = ->
-    unless localStorage.oauth
-        chrome.browserAction.setIcon { path: '/img/ba_36g.png' }
-        chrome.browserAction.setBadgeBackgroundColor color: [190, 190, 190, 230]
-        chrome.browserAction.setBadgeText text: '?'
+    if not localStorage.getItem 'oauth'
+        setBadge()
         return null
 
     xhr = new XMLHttpRequest()
     xhr.open 'get', 'http://cloud.feedly.com/v3/markers/counts', true
     xhr.onreadystatechange = xhrReadyListener
-    xhr.setRequestHeader 'Authorization', localStorage.oauth
+    xhr.setRequestHeader 'Authorization', localStorage.getItem 'oauth'
     xhr.send()
 
 calculateUnread = (unreads) ->
@@ -24,19 +21,28 @@ xhrReadyListener = ->
     return unless @readyState == 4
 
     if @status == 200
-        color = [208, 0, 24, 255]
         response = JSON.parse @response
         text = calculateUnread response.unreadcounts
         text = '' if text == 0
+        setBadge text
     else if @status == 401
         localStorage.removeItem 'oauth'
+        setBadge()
 
-    chrome.browserAction.setIcon { path: '/img/ba_36.png' }
-    chrome.browserAction.setBadgeBackgroundColor color: color
-    chrome.browserAction.setBadgeText text: "#{text}"
+setBadge = (badgeText) ->
+    if badgeText != undefined
+        imgPath = '/img/ba_36.png'
+        badgeColor = [208, 0, 24, 255]
+    else
+        imgPath = '/img/ba_36g.png'
+        badgeColor = [190, 190, 190, 230]
+        badgeText = '?'
+
+    chrome.browserAction.setIcon { path: imgPath }
+    chrome.browserAction.setBadgeBackgroundColor color: badgeColor
+    chrome.browserAction.setBadgeText text: badgeText.toString()
 
 onInit = ->
-    chrome.alarms.clearAll()
     sendRequest()
     scheduleUpdater()
 
@@ -56,12 +62,12 @@ setAuth = (tabId) ->
 
     # can't update oauth string if already set
     # BUG: possible problem with async xhr
-    return if localStorage.oauth
+    return if localStorage.getItem 'oauth'
 
     chrome.webRequest.onBeforeSendHeaders.addListener (details) ->
         for header in details.requestHeaders
             continue unless header.name == 'X-Feedly-Access-Token'
-            localStorage.oauth = header.value
+            localStorage.setItem 'oauth', header.value
             sendRequest()
     ,
         urls: ['http://cloud.feedly.com/v3/subscriptions*']
