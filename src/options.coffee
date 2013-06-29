@@ -18,8 +18,8 @@ localizePage = ->
         chrome.i18n.getMessage 'options_fetch_timeout'
 
 restoreOptions = ->
-    controlElements.fetch_timeout.value = Options.getItem 'fetch_timeout'
+    controlElements.fetch_timeout.value = OptionsInterface.getItem 'fetch_timeout'
 
 doSave = (event) ->
-    Options.setItem 'fetch_timeout', controlElements.fetch_timeout.value
-    Options.applyAll()
+    OptionsInterface.setItem 'fetch_timeout', controlElements.fetch_timeout.value
+    OptionsInterface.applyAll()
