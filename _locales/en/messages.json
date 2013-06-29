@@ -1,1 +1,14 @@
-{}
+{
+    "description": {
+        "message": "Notifier of unread articles for Feedly RSS Reader"
+    },
+    "options_title": {
+        "message": "Options"
+    },
+    "options_save_button": {
+        "message": "Save"
+    },
+    "options_fetch_timeout": {
+        "message": "Fetch timeout (in minutes)"
+    }
+}

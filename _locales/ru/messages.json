@@ -1,0 +1,14 @@
+{
+    "description": {
+        "message": "Счетчик непрочитанных новостей для Feedly RSS Reader"
+    },
+    "options_title": {
+        "message": "Настройки"
+    },
+    "options_save_button": {
+        "message": "Сохранить"
+    },
+    "options_fetch_timeout": {
+        "message": "Период обновления (в минутах)"
+    }
+}

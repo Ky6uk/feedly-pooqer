@@ -1,5 +1,8 @@
 scheduleUpdater = ->
-    chrome.alarms.create 'pooque', { periodInMinutes: 1 }
+    period = localStorage.getItem 'fetch_timeout'
+    period = 1 if +period < 1
+
+    chrome.alarms.create 'pooque', { periodInMinutes: period }
 
 sendRequest = ->
     if not localStorage.getItem 'oauth'
@@ -74,7 +77,9 @@ setAuth = (tabId) ->
         tabId: tabId
     , ["requestHeaders"]
 
+chrome.alarms.onAlarm.addListener (alarm) ->
+    sendRequest() if alarm.name == 'pooque'
+
 chrome.runtime.onInstalled.addListener onInit
 chrome.runtime.onStartup.addListener onInit
 chrome.browserAction.onClicked.addListener openFeedly
-chrome.alarms.onAlarm.addListener sendRequest
