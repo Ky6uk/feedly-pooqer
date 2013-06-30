@@ -37,7 +37,7 @@ module.exports = (grunt) ->
                     'js/options.min.js':    ['js/options.js']
                     'js/background.min.js': ['js/background.js']
 
-        clean: ['js/**/*']
+        clean: ['js/**/*', '*.zip']
 
     grunt.registerTask 'default', ['coffee', 'uglify', 'watch']
     grunt.registerTask 'bundle',  ['clean', 'coffee', 'uglify', 'compress']
