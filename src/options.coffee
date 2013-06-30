@@ -22,4 +22,3 @@ restoreOptions = ->
 
 doSave = (event) ->
     OptionsInterface.setItem 'fetch_timeout', controlElements.fetch_timeout.value
-    OptionsInterface.applyAll()

@@ -9,6 +9,9 @@ Object.defineProperty Options, 'fetch_timeout',
         if value < 1 then value = 1
         else if value > 30 then value = 30
 
+        chrome.alarms.clearAll()
+        chrome.alarms.create 'pooque', { periodInMinutes: value }
+
         localStorage.setItem 'fetch_timeout', value
 
     get: ->

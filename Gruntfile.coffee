@@ -4,6 +4,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-contrib-compress'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
+    grunt.loadNpmTasks 'grunt-contrib-clean'
 
     grunt.initConfig
         coffee:
@@ -23,7 +24,7 @@ module.exports = (grunt) ->
                 options:
                     archive: 'feedly-pooqer.zip'
                 src: [
-                    '*.html'
+                    'options.html'
                     'manifest.json'
                     'img/**/*'
                     'js/**/*.min.js'
@@ -33,8 +34,10 @@ module.exports = (grunt) ->
         uglify:
             feedly_pooqer:
                 files:
-                    'js/options.min.js':           ['js/options.js']
-                    'js/background.min.js':        ['js/background.js']
+                    'js/options.min.js':    ['js/options.js']
+                    'js/background.min.js': ['js/background.js']
+
+        clean: ['js/**/*']
 
     grunt.registerTask 'default', ['coffee', 'uglify', 'watch']
-    grunt.registerTask 'bundle',  ['coffee', 'uglify', 'compress']
+    grunt.registerTask 'bundle',  ['clean', 'coffee', 'uglify', 'compress']

@@ -12,6 +12,8 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-watch": "~0.3.1",
-    "grunt-contrib-compress": "~0.5.2"
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-mocha": "~0.3.4",
+    "grunt-contrib-clean": "~0.4.1"
   }
 }
