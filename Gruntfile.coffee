@@ -18,7 +18,8 @@ module.exports = (grunt) ->
                     'js/background.js':        'src/background.coffee'
 
                     # test suits
-                    'test/options-object.test.js': 'src/test/options-object.coffee'
+                    'test/options-object.test.js':    'src/test/options-object.coffee'
+                    'test/options-interface.test.js': 'src/test/options-interface.coffee'
 
         watch:
             files: 'src/**/*.coffee'
