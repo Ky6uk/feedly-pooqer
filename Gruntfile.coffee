@@ -40,7 +40,7 @@ module.exports = (grunt) ->
         uglify:
             feedly_pooqer:
                 files:
-                    'js/options.min.js':    ['options-object.js', 'js/options-interface.js', 'js/options.js']
+                    'js/options.min.js':    ['js/options-object.js', 'js/options-interface.js', 'js/options.js']
                     'js/background.min.js': ['js/background.js']
 
         clean: ['js/**/*', 'test/**/*', '*.zip']

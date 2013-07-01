@@ -51,33 +51,31 @@ onInit = ->
     sendRequest()
     scheduleUpdater()
 
-openFeedly = ->
-    chrome.tabs.query { url: 'http://cloud.feedly.com/' }, (tabs) ->
-        if tabs[0]
-            tabId = tabs[0].id
-            chrome.tabs.update tabId, active: true unless tabs[0].active
-            return setAuth tabId
-        else
-            chrome.tabs.create { url: 'http://cloud.feedly.com/' }, (tab) ->
-                return setAuth tab.id
+authCallback = (details) ->
+    for header in details.requestHeaders
+        continue unless header.name == 'X-Feedly-Access-Token'
+        localStorage.setItem 'oauth', header.value
+        sendRequest()
 
-setAuth = (tabId) ->
+    chrome.webRequest.onBeforeSendHeaders.removeListener authCallback
+
+openFeedly = ->
     # update counter immediately
     sendRequest()
 
-    # can't update oauth string if already set
-    # BUG: possible problem with async xhr
-    return if localStorage.getItem 'oauth'
+    # listen feedly headers for saving oauth token
+    unless localStorage.getItem 'oauth'
+        chrome.webRequest.onBeforeSendHeaders.addListener authCallback,
+            urls: ['http://cloud.feedly.com/v3/subscriptions*']
+        , ["requestHeaders"]
 
-    chrome.webRequest.onBeforeSendHeaders.addListener (details) ->
-        for header in details.requestHeaders
-            continue unless header.name == 'X-Feedly-Access-Token'
-            localStorage.setItem 'oauth', header.value
-            sendRequest()
-    ,
-        urls: ['http://cloud.feedly.com/v3/subscriptions*']
-        tabId: tabId
-    , ["requestHeaders"]
+    chrome.tabs.query { url: 'http://cloud.feedly.com/' }, (tabs) ->
+        if tabs[0]
+            chrome.tabs.update tabs[0].id, active: true unless tabs[0].active
+            chrome.tabs.reload tabs[0].id unless localStorage.getItem 'oauth'
+        else
+            chrome.tabs.create { url: 'http://cloud.feedly.com/' }
+
 
 chrome.alarms.onAlarm.addListener (alarm) ->
     sendRequest() if alarm.name == 'pooque'
