@@ -14,7 +14,6 @@ describe 'Options Interface', ->
             delete Options.__testKey__
 
         it 'setter pass minimum two arguments', ->
-
             expect(OptionsInterface.setItem)
                 .to.throw TypeError, 'Not enough arguments'
 
@@ -31,11 +30,11 @@ describe 'Options Interface', ->
             expect(OptionsInterface.getItem.bind(OptionsInterface, "__testKey__"))
                 .to.not.throw TypeError, 'Not enough arguments'
 
-        it 'create new key/value pair', ->
+        it 'setter create new key/value pair', ->
             expect(OptionsInterface.setItem '__testKey__', '__testValue__').to.be.true
             expect(OptionsInterface.getItem '__testKey__').to.equal '__testValue__'
 
-        it 'should change current value', ->
+        it 'setter change current value', ->
             expect(OptionsInterface.setItem '__testKey__', '__testValue__').to.be.true
             expect(OptionsInterface.getItem '__testKey__').to.equal '__testValue__'
             expect(OptionsInterface.setItem '__testKey__', '__somethingDiffered__').to.be.true
