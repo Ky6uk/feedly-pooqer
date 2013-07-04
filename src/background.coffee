@@ -8,12 +8,20 @@ scheduleUpdater = ->
 
     # schedule markers events
     chrome.webRequest.onBeforeRequest.addListener markersCallback,
-            urls: ['http://cloud.feedly.com/v3/markers*']
+            urls: ['http://cloud.feedly.com/v3/markers?*']
             types: ['xmlhttprequest']
         , ['requestBody']
 
 markersCallback = (details) ->
-    console.log details
+    if not localStorage.getItem('oauth') or not details.hasOwnProperty('requestBody') or not details.requestBody.hasOwnProperty 'raw'
+        return false
+
+    array = new Uint8Array details.requestBody.raw[0].bytes
+    requestData = JSON.parse String.fromCharCode.apply null, array
+
+    if requestData.action == 'markAsRead'
+        # looks awful, right? :)
+        setTimeout sendRequest, 2000
 
 sendRequest = ->
     if not localStorage.getItem 'oauth'
