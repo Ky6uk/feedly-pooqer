@@ -6,6 +6,14 @@ scheduleUpdater = ->
 
     chrome.alarms.create 'pooque', { periodInMinutes: period }
 
+    # schedule markers events
+    chrome.webRequest.onCompleted.addListener markersCallback,
+            urls: ['http://cloud.feedly.com/v3/markers*']
+            types: ['xmlhttprequest']
+
+markersCallback = (details) ->
+    console.log details
+
 sendRequest = ->
     if not localStorage.getItem 'oauth'
         setBadge()
