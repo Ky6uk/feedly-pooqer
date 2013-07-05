@@ -35,11 +35,6 @@ sendRequest = ->
     xhr.setRequestHeader 'Authorization', localStorage.getItem 'oauth'
     xhr.send()
 
-calculateUnread = (unreads) ->
-    for item in unreads
-        continue unless item.id.match /^user\/[\da-f-]+?\/category\/global\.all$/
-        return item.count
-
 xhrReadyListener = ->
     return unless @readyState == 4
 
