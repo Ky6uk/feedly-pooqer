@@ -1,0 +1,14 @@
+{
+    "description": {
+        "message": "Notificateur d'articles non-lus pour Feedly RSS Reader"
+    },
+    "options_title": {
+        "message": "Options"
+    },
+    "options_save_button": {
+        "message": "Sauver"
+    },
+    "options_fetch_timeout": {
+        "message": "Intervalle de vérification (en minutes)"
+    }
+}
