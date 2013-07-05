@@ -1,5 +1,3 @@
-'use strict'
-
 scheduleUpdater = ->
     period = +localStorage.getItem 'fetch_timeout'
     period = 1 if period < 1
@@ -20,16 +18,19 @@ markersCallback = (details) ->
     requestData = JSON.parse String.fromCharCode.apply null, array
 
     if requestData.action == 'markAsRead'
-        # looks awful, right? :)
-        setTimeout sendRequest, 2000
+        # looks awful :)
+        setTimeout sendRequest, 1500
 
 sendRequest = ->
     if not localStorage.getItem 'oauth'
         setBadge()
-        return null
+        return false
+
+    # do not send request too quickly
+    return false unless reduceFrequency()
 
     xhr = new XMLHttpRequest()
-    xhr.open 'get', 'http://cloud.feedly.com/v3/markers/counts', true
+    xhr.open 'GET', 'http://cloud.feedly.com/v3/markers/counts'
     xhr.onreadystatechange = xhrReadyListener
     xhr.setRequestHeader 'Authorization', localStorage.getItem 'oauth'
     xhr.send()
@@ -92,7 +93,6 @@ openFeedly = ->
             chrome.tabs.reload tabs[0].id unless localStorage.getItem 'oauth'
         else
             chrome.tabs.create { url: 'http://cloud.feedly.com/' }
-
 
 chrome.alarms.onAlarm.addListener (alarm) ->
     sendRequest() if alarm.name == 'pooque'

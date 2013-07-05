@@ -15,11 +15,13 @@ module.exports = (grunt) ->
                     'js/options-object.js':    'src/options-object.coffee'
                     'js/options-interface.js': 'src/options-interface.coffee'
                     'js/options.js':           'src/options.coffee'
+                    'js/helper.js':            'src/helper.coffee'
                     'js/background.js':        'src/background.coffee'
 
                     # test suits
                     'test/options-object.test.js':    'src/test/options-object.coffee'
                     'test/options-interface.test.js': 'src/test/options-interface.coffee'
+                    'test/helper.test.js':            'src/test/helper.coffee'
 
         watch:
             files: 'src/**/*.coffee'
@@ -41,7 +43,7 @@ module.exports = (grunt) ->
             feedly_pooqer:
                 files:
                     'js/options.min.js':    ['js/options-object.js', 'js/options-interface.js', 'js/options.js']
-                    'js/background.min.js': ['js/background.js']
+                    'js/background.min.js': ['js/helper.js', 'js/background.js']
 
         clean: ['js/**/*', 'test/**/*', '*.zip']
 
