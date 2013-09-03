@@ -30,7 +30,7 @@ sendRequest = ->
     return false unless reduceFrequency()
 
     xhr = new XMLHttpRequest()
-    xhr.open 'GET', '*://cloud.feedly.com/v3/markers/counts'
+    xhr.open 'GET', 'http://cloud.feedly.com/v3/markers/counts'
     xhr.onreadystatechange = xhrReadyListener
     xhr.setRequestHeader 'Authorization', localStorage.getItem 'oauth'
     xhr.send()
