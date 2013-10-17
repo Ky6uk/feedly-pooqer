@@ -39,9 +39,10 @@ xhrReadyListener = ->
     return unless @readyState == 4
 
     if @status == 200
-        response = JSON.parse @response
-        text = calculateUnread response.unreadcounts
-        text = '' if text == 0
+        try
+          response = JSON.parse @response
+          text = calculateUnread response.unreadcounts
+          text = '' if text == 0
         setBadge text
     else if @status == 401
         localStorage.removeItem 'oauth'
