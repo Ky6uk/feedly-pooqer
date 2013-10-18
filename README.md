@@ -9,12 +9,10 @@ ___
 
 Short Development Notes
 -----------------------
-Main part of code written on `coffescript`. Build system based on `nodejs` and `grunt`.
+Build system based on `nodejs` and `grunt`.
 
 Try to use these some useful commands:
 
 ```bash
 $ npm install
-$ npm start
-$ grunt bundle
 ```

@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "readme": "README.md",
-  "scripts": {
-    "start": "grunt"
-  },
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
