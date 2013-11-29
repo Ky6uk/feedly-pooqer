@@ -5,8 +5,13 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.initConfig({
+        clean: ['*.zip', 'js/**/*.min.js'],
+
         compress: {
             main: {
                 options: { archive: 'feedly-pooqer.zip' },
@@ -20,8 +25,29 @@ module.exports = function (grunt) {
             }
         },
 
-        clean: ['*.zip']
+        jshint: {
+            all: ['Gruntfile.js', 'src/**/*.js']
+        },
+
+        uglify: {
+            main: {
+                files: {
+                    'js/background.min.js': ['src/background.js']
+                }
+            }
+        },
+
+        watch: {
+            js: {
+                files: ['src/**/*.js'],
+                tasks: ['jshint', 'uglify'],
+                options: {
+                    spawn: false
+                }
+            }
+        }
     });
 
-    grunt.registerTask('default',  ['clean', 'compress']);
+    grunt.registerTask('release', ['clean', 'jshint', 'uglify', 'compress']);
+    grunt.registerTask('default', ['watch']);
 };
