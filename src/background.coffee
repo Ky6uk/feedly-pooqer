@@ -6,7 +6,7 @@ scheduleUpdater = ->
 
     # schedule markers events
     chrome.webRequest.onBeforeRequest.addListener markersCallback,
-            urls: ['*://cloud.feedly.com/v3/markers?*']
+            urls: ['*://feedly.com/v3/markers?*']
             types: ['xmlhttprequest']
         , ['requestBody']
 
@@ -30,7 +30,7 @@ sendRequest = ->
     return false unless reduceFrequency()
 
     xhr = new XMLHttpRequest()
-    xhr.open 'GET', 'http://cloud.feedly.com/v3/markers/counts'
+    xhr.open 'GET', 'http://feedly.com/v3/markers/counts'
     xhr.onreadystatechange = xhrReadyListener
     xhr.setRequestHeader 'Authorization', localStorage.getItem 'oauth'
     xhr.send()
@@ -80,15 +80,15 @@ openFeedly = ->
     # listen feedly headers for saving oauth token
     unless localStorage.getItem 'oauth'
         chrome.webRequest.onBeforeSendHeaders.addListener authCallback,
-            urls: ['*://cloud.feedly.com/v3/subscriptions*']
+            urls: ['*://feedly.com/v3/subscriptions*']
         , ["requestHeaders"]
 
-    chrome.tabs.query { url: '*://cloud.feedly.com/' }, (tabs) ->
+    chrome.tabs.query { url: '*://feedly.com/' }, (tabs) ->
         if tabs[0]
             chrome.tabs.update tabs[0].id, active: true unless tabs[0].active
             chrome.tabs.reload tabs[0].id unless localStorage.getItem 'oauth'
         else
-            chrome.tabs.create { url: 'http://cloud.feedly.com/' }
+            chrome.tabs.create { url: 'http://feedly.com/' }
 
 chrome.alarms.onAlarm.addListener (alarm) ->
     sendRequest() if alarm.name == 'pooque'

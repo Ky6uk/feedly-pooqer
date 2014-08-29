@@ -19,7 +19,7 @@
         "tabs",
         "alarms",
         "webRequest",
-        "http://cloud.feedly.com/*"
+        "http://feedly.com/*"
     ],
     "background": {
         "scripts": ["/js/background.min.js"],
